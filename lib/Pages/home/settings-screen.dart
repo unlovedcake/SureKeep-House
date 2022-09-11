@@ -139,7 +139,7 @@ class _AndroidSettingsScreenState extends State<AndroidSettingsScreen> {
 
   Future<int> getDuration() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? duration = prefs.getInt('duration') ?? 0;
+    int? duration = prefs.getInt('duration') ?? 30;
     return  duration;
 }
 
@@ -179,6 +179,7 @@ class _AndroidSettingsScreenState extends State<AndroidSettingsScreen> {
                         //prefs.setInt('duration', 0);
 
                       });
+                      prefs.getBool('isBackGroundMode') == false ? prefs.setInt('duration', 0) : prefs.setInt('duration', 30);
                       print(value);
                     }),
                 Column(

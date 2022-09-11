@@ -223,58 +223,51 @@ class _ChatConversationState extends State<ChatConversation> {
     print("Build");
     return Scaffold(
       appBar: AppBar(
+
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
-          child: Container(
-            padding: EdgeInsets.only(right: 16),
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                  ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
                 ),
-                SizedBox(
-                  width: 2,
-                ),
-                CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(widget.user.imageUrl.toString()),
-                  maxRadius: 20,
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "${widget.user.firstName}",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        "Online",
-                        style: TextStyle(
-                            color: Colors.grey.shade600, fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
+              ),
+              Spacer(),
+              CircleAvatar(
+                backgroundImage:
+                    NetworkImage(widget.user.imageUrl.toString()),
+                maxRadius: 20,
+              ),
 
-              ],
-            ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      " ${widget.user.firstName}",
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+
+                    Text(
+                      "  Online",
+                      style: TextStyle(
+                          color: Colors.grey.shade600, fontSize: 10),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+            ],
           ),
         ),
       ),
@@ -285,7 +278,7 @@ class _ChatConversationState extends State<ChatConversation> {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+              padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
               height: 80,
               width: double.infinity,
               color: Colors.white,
@@ -300,14 +293,14 @@ class _ChatConversationState extends State<ChatConversation> {
                         color: Colors.lightBlue,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.add,
                         color: Colors.white,
                         size: 20,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
@@ -392,7 +385,7 @@ class _ChatConversationState extends State<ChatConversation> {
 
 
   Widget buildListMessage() {
-
+    final size = MediaQuery.of(context).size;
 
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
@@ -416,23 +409,16 @@ class _ChatConversationState extends State<ChatConversation> {
                   return  EncryptedChatMessage(messageData: messageData, user: widget.user);
                 }else{   return Container(
                   padding:
-                  EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                  const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
                   child: Align(
                     alignment: (messageData.get('idFrom') == user!.uid
                         ? Alignment.topRight
                         : Alignment.topLeft),
                     child: Wrap(
-                      spacing: 4,
+                              spacing: 6,
                       children: [
                         (messageData.get('idFrom') == user!.uid
-                            ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            user!.photoURL.toString(),
-                            width: 20,
-                            height: 20,
-                          ),
-                        )
+                            ? const SizedBox.shrink()
                             : ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
@@ -442,23 +428,45 @@ class _ChatConversationState extends State<ChatConversation> {
                             ))),
                         Column(
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20)
-                                ,bottomLeft:  Radius.circular(20)),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(minWidth: 40, maxWidth: 250),
+                              child:
 
-                                //borderRadius: BorderRadius.circular(20),
-                                color: (messageData.get('idFrom') == user!.uid
-                                    ? Colors.grey.shade200
-                                    : Colors.blue[200]),
-                              ),
-                              padding: EdgeInsets.all(16),
-                              child: Text(
-                                messageData.get('message'),
-                                style: TextStyle(fontSize: 15),
+                              messageData.get('idFrom') == user!.uid ? Container(
+
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20)
+                                      ,bottomRight:  Radius.circular(20)
+                                      ,bottomLeft:  Radius.circular(20)),
+
+                                  color:  Colors.grey.shade200
+
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  messageData.get('message'),
+
+                                  style: const TextStyle(fontSize: 15),
+                                ),
+                              ) : Container(
+
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(20)
+                                      ,bottomRight:  Radius.circular(20)
+                                      ,bottomLeft:  Radius.circular(20)),
+                                  color: Colors.blue[200],
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  messageData.get('message'),
+
+                                  style: const TextStyle(fontSize: 15),
+                                ),
                               ),
                             ),
+                            const SizedBox(height: 4,),
                             Text(
                               readTimestamp(
                                 messageData
@@ -466,10 +474,20 @@ class _ChatConversationState extends State<ChatConversation> {
                                     .millisecondsSinceEpoch,
                               ),
                               style:
-                              TextStyle(fontSize: 10, color: Colors.grey),
+                              const TextStyle(fontSize: 10, color: Colors.grey),
                             ),
                           ],
                         ),
+
+                        messageData.get('idFrom') == user!.uid ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            user!.photoURL.toString(),
+                            width: 20,
+                            height: 20,
+                          ),
+                        ) : SizedBox.shrink(),
+
                       ],
                     ),
                   ),

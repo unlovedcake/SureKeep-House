@@ -25,13 +25,35 @@ class _OTPVerificationCodeState extends State<OTPVerificationCode> {
   String? _phoneNumber;
 
 
+  late String otpCode;
 
+  void otp()async{
 
+     otpCode =  Provider.of<AuthProvider>(context,listen: false).getOtpCode;
+
+    await Future.delayed(const Duration(milliseconds: 500)).then((value){
+      otpController1.text = otpCode[0];
+    });
+    await  Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      otpController2.text = otpCode[1];
+    });
+    await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      otpController3.text = otpCode[2];
+    });
+    await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      otpController4.text = otpCode[3];
+    });
+    await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      otpController5.text = otpCode[4];
+    });
+    await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      otpController6.text = otpCode[5];
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-
 
   }
 
@@ -40,8 +62,8 @@ class _OTPVerificationCodeState extends State<OTPVerificationCode> {
  _phoneNumber =  context.watch<AuthProvider>().getPhoneNumber;
 
 
+ otp();
 
- String otpCode =  Provider.of<AuthProvider>(context,listen: false).getOtpCode;
 
 
 

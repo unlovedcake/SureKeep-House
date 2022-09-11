@@ -73,7 +73,7 @@ class ChatProvider extends ChangeNotifier {
     try {
       showDialog(
           context: context,
-          barrierDismissible: true,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             return ProgressDialog(
               message: "Authenticating, Please wait...",
@@ -87,6 +87,7 @@ class ChatProvider extends ChangeNotifier {
       final List<DocumentSnapshot> document = result.docs;
       DocumentSnapshot documentSnapshot = document[0];
       UserModel userData = UserModel.fromMap(documentSnapshot);
+
 
       if (userData.fakePassword == password) {
         String docId = prefs.getString('docID') ?? "";
@@ -107,7 +108,7 @@ class ChatProvider extends ChangeNotifier {
 
         Navigator.pop(context);
 
-        NavigateRoute.gotoPage(context,  FakeConversation(user:userData));
+        NavigateRoute.gotoPage(context,  FakeConversation(user:userData, userNameAndImage: userModel ));
         // NavigateRoute.gotoPage(context, FakeConversation(user: userModel));
 
       } else {

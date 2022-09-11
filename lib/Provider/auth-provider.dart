@@ -29,7 +29,7 @@ class AuthProvider extends ChangeNotifier {
   String? userEmail;
   String verificationID = "";
   String _phoneNumber = "";
-  String _otpCode = "";
+  String _otpCode = "000000";
   String genderValue = "Man";
 
   bool isGenderMan = false;
@@ -85,6 +85,8 @@ class AuthProvider extends ChangeNotifier {
 
 
   Future<void> loginWithPhone(String phoneNumber, BuildContext context) async {
+
+    int? resendToken;
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -98,7 +100,6 @@ class AuthProvider extends ChangeNotifier {
       _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-
 
           await _auth.signInWithCredential(credential).then((value){
 
@@ -144,11 +145,16 @@ class AuthProvider extends ChangeNotifier {
           print(e.toString());
 
         },
-        codeSent: (String verificationId, int? resendToken) {
+        forceResendingToken: resendToken,
+        codeSent: (String verificationId, int? resendTokens) {
 
 
           verificationID = verificationId;
           _phoneNumber = phoneNumber;
+
+          resendToken = resendTokens;
+          UserCredential? userCredential;
+          userCredential?.additionalUserInfo?.isNewUser;
 
           Navigator.pop(context);
           NavigateRoute.gotoPage(context, const OTPVerificationCode());

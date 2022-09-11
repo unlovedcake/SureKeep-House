@@ -66,7 +66,7 @@ class _PersonWhoChattedYouState extends State<PersonWhoChattedYou>
               child: Container(
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: Colors.grey[200],
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     // borderRadius:  BorderRadius.only(
                     //   topLeft: Radius.circular(40.0),
@@ -74,13 +74,11 @@ class _PersonWhoChattedYouState extends State<PersonWhoChattedYou>
                     // )
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.network(user!.photoURL.toString())),
+                      children: const [
+
                         Spacer(),
                         Text("Search.."),
                         Spacer(),
@@ -347,6 +345,7 @@ class _PersonWhoChattedYouState extends State<PersonWhoChattedYou>
               ? SizedBox.shrink()
               : Text(
                   documentSnapshot.get('chattingWith')['lastMessage'],
+            maxLines: 4, overflow: TextOverflow.ellipsis,
                   style: const TextStyle(color: Colors.blue),
                 ),
           selected: true,

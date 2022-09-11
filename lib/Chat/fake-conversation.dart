@@ -24,7 +24,9 @@ import 'package:http/http.dart' as http;
 class FakeConversation extends StatefulWidget {
   final UserModel user;
 
-  const FakeConversation({Key? key, required this.user}) : super(key: key);
+  final UserModel userNameAndImage;
+
+  const FakeConversation({Key? key, required this.user,required this.userNameAndImage}) : super(key: key);
 
   @override
   State<FakeConversation> createState() => _FakeConversationState();
@@ -226,7 +228,7 @@ class _FakeConversationState extends State<FakeConversation> {
                 ),
                 CircleAvatar(
                   backgroundImage:
-                      NetworkImage(widget.user.imageUrl.toString()),
+                      NetworkImage(widget.userNameAndImage.imageUrl.toString()),
                   maxRadius: 20,
                 ),
                 SizedBox(
@@ -238,7 +240,7 @@ class _FakeConversationState extends State<FakeConversation> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "${widget.user.firstName}",
+                        "${widget.userNameAndImage.firstName}",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
